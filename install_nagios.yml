@@ -1,0 +1,39 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+
+    - name: dnf and epel installation
+      yum:
+        name: 
+          - epel-release
+          - dnf
+      when: ansible_distribution == "CentOS"
+
+    - name: dpkg in ubuntu
+      shell: |
+        dpkg --configure -a
+      when: ansible_distribution == "Ubuntu"
+
+    - name: install updates (CentOS)
+      dnf:
+        update_cache: yes
+        update_only: yes
+      when: ansible_distribution == "CentOS"
+
+    - name: install updates (Ubuntu)
+      apt:
+        upgrade: dist
+        update_cache: yes
+      when: ansible_distribution == "Ubuntu"
+
+- hosts: ubuntu_nagios
+  become: true
+  roles:
+    - ubuntu_nagios
+
+- hosts: centos_nagios
+  become: true
+  roles:
+    - centos_nagios

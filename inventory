@@ -1,0 +1,5 @@
+[ubuntu_nagios]
+192.168.56.103
+
+[centos_nagios]
+jpaz@192.168.56.104
